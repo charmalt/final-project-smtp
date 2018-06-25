@@ -1,0 +1,23 @@
+{
+  "name": "final-project-smtp",
+  "version": "0.0.1",
+  "description": "A very very simple SMTP server",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charmalt/final-project-smtp.git"
+  },
+  "keywords": [
+    "smtp",
+    "server"
+  ],
+  "author": "Igor Ryabchuk, George Sykes, Ben Furber, John Newman, Charlene Chetcuti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/charmalt/final-project-smtp/issues"
+  },
+  "homepage": "https://github.com/charmalt/final-project-smtp#readme"
+}
