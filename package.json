@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/charmalt/final-project-smtp/issues"
   },
-  "homepage": "https://github.com/charmalt/final-project-smtp#readme"
+  "homepage": "https://github.com/charmalt/final-project-smtp#readme",
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
 }
