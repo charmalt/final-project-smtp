@@ -1,4 +1,4 @@
-const TCPClient = require('../lib/tcpClient.js')
+const TCPConnectedClient = require('../lib/TCPConnectedClient.js')
 
 describe('TCPClient', () => {
   let client
@@ -13,7 +13,7 @@ describe('TCPClient', () => {
   let mockMessage = 'Test String'
 
   beforeEach(() => {
-    client = new TCPClient(mockSocket)
+    client = new TCPConnectedClient(mockSocket)
   })
 
   it('stores the address', () => {

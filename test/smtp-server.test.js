@@ -1,4 +1,6 @@
 const Server = require('../lib/smtp-server')
+const TCPConnectedClient = require('../lib/TCPConnectedClient')
+jest.mock('../lib/TCPConnectedClient')
 jest.mock('net')
 
 describe('Server', () => {
@@ -19,11 +21,6 @@ describe('Server', () => {
     port: 2000,
     name: 'name'
   }
-  jest.mock('../lib/tcpClient', () => {
-    return function () {
-      return mockClient
-    }
-  })
 
   beforeEach(() => {
     server = new Server(serverPort, serverAddress)
@@ -51,6 +48,12 @@ describe('Server', () => {
   })
 
   describe('createClient', () => {
+    beforeEach(() => {
+      TCPConnectedClient.mockImplementation((socket) => {
+        return mockClient
+      })
+    })
+
     it('logs the new client connection', () => {
       server.createClient(mockSocket)
       expect(console.log.mock.calls[0][0]).toBe(`${mockClient.name} connected`)
