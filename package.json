@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/charmalt/final-project-smtp#readme",
   "devDependencies": {
+    "jest": "^23.2.0",
     "standard": "^11.0.1"
   }
 }
