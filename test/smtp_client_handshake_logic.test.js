@@ -1,3 +1,4 @@
+/* global describe, it, expect, beforeEach, xit */
 const SmtpClientHandshake = require('../lib/smtp_client_handshake_logic')
 
 
@@ -25,8 +26,11 @@ describe('smtpClientHandshake module', function () {
     expect(smtpClientHandshake.parseMessage('RCPT TO: at@test.com')).toEqual(250)
   })
   describe('data transfer', function () {
-    it('should respond to \'DATA\' w  ith 354', function () {
+    it('should respond to \'DATA\' with 354', function () {
       expect(smtpClientHandshake.parseMessage('DATA')).toEqual(354)
+    })
+    it('should respone to \'\r\n.\r\n\' with 250', function () {
+      expect(smtpClientHandshake.parseMessage('\r\n.\r\n')).toEqual(250)
     })
   })
 })
