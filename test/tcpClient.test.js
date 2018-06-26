@@ -7,7 +7,7 @@ describe('TCPClient', () => {
   let mockSocket = {
     remoteAddress: clientAddress,
     remotePort: clientPort,
-    name: `${clientPort}:${clientAddress}`
+    name: `${clientAddress}:${clientPort}`
   }
 
   beforeEach(() => {
@@ -20,5 +20,9 @@ describe('TCPClient', () => {
 
   it('stores the port', () => {
     expect(client.port).toBe(clientPort)
+  })
+
+  it('creates the name', () => {
+    expect(client.name).toBe(`${clientAddress}:${clientPort}`)
   })
 })
