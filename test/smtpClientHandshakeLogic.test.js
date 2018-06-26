@@ -1,5 +1,5 @@
 /* global describe, it, expect, beforeEach, xit */
-const SmtpClientHandshake = require('../lib/smtp_client_handshake_logic')
+const SmtpClientHandshake = require('../lib/smtpClientHandshakeLogic')
 
 
 
