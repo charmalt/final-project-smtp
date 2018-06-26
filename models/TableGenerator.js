@@ -11,6 +11,6 @@ const connectionStringTest = process.env.DATABASE_URL || 'postgres://localhost:5
 
 const clientTest = new pg.Client(connectionStringTest);
 clientTest.connect();
-const queryTest = client2.query(
+const queryTest = clientTest.query(
   'CREATE TABLE mail(id SERIAL PRIMARY KEY, email VARCHAR(200))');
 queryTest.on('end', () => { clientTest.end(); });
