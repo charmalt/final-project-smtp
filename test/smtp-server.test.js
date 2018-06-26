@@ -6,15 +6,18 @@ describe('Server', () => {
   let server
   let serverPort = 1337
   let serverAddress = '127.0.0.1'
+  let mockServer = { listen: () => {} }
+  let mockSpy
 
   beforeEach(() => {
     server = new Server(serverPort, serverAddress)
-    net.createServer = () => { return 'Server'}
+    mockSpy = spyOn(mockServer, 'listen')
+    net.createServer = () => { return mockServer }
   })
 
   it('creates an TCP server', () => {
     server.start()
-    expect(server.server).toEqual('Server')
+    expect(server.connection).toEqual(mockServer)
   })
 
   it('defines a port', () => {
@@ -24,4 +27,10 @@ describe('Server', () => {
   it('defines an address', () => {
     expect(server.address).toBe(serverAddress)
   })
+
+  it('tells the connection to listen on set port and address', () => {
+    server.start()
+    expect(mockSpy).toHaveBeenCalledWith(serverPort, serverAddress)
+  })
+
 })
