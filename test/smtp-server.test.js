@@ -20,6 +20,7 @@ describe('Server', () => {
     server = new Server(serverPort, serverAddress)
     mockSpy = jest.spyOn(mockServer, 'listen')
     net.createServer = () => { return mockServer }
+    console.log = jest.fn()
   })
 
   it('creates an TCP server', () => {
@@ -42,9 +43,14 @@ describe('Server', () => {
 
   describe('createClient', () => {
     it('logs the new client connection', () => {
-      console.log = jest.fn()
       server.createClient(mockSocket)
       expect(console.log.mock.calls[0][0]).toBe(`${mockSocket.name} connected`)
+    })
+  })
+  describe('closeConnection', () => {
+    it('logs the closed connection', () => {
+      server.closeConnection(mockSocket)
+      expect(console.log.mock.calls[0][0]).toBe(`${mockSocket.name} disconnected`)
     })
   })
 })
