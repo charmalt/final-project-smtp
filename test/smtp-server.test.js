@@ -5,14 +5,20 @@ describe('Server', () => {
   let net = require('net')
   let server
   let serverPort = 1337
+  let clientPort = 5001
   let serverAddress = '127.0.0.1'
+  let clientAddress = '127.0.0.0'
   let mockServer = { listen: () => {} }
   let mockSpy
-  let data = "String"
+  let mockSocket = {
+    remoteAddress: clientAddress,
+    port: clientPort,
+    name: `${clientPort}:${clientAddress}`
+  }
 
   beforeEach(() => {
     server = new Server(serverPort, serverAddress)
-    mockSpy = spyOn(mockServer, 'listen')
+    mockSpy = jest.spyOn(mockServer, 'listen')
     net.createServer = () => { return mockServer }
   })
 
@@ -34,10 +40,11 @@ describe('Server', () => {
     expect(mockSpy).toHaveBeenCalledWith(serverPort, serverAddress)
   })
 
-  describe('parseData', () => {
-    it('formats data correctly', () => {
-      expect(server.parseData(data)).toEqual(data)
+  describe('createClient', () => {
+    it('logs the new client connection', () => {
+      console.log = jest.fn()
+      server.createClient(mockSocket)
+      expect(console.log.mock.calls[0][0]).toBe(`${mockSocket.name} connected`)
     })
   })
-
 })
