@@ -12,9 +12,18 @@ describe('Server', () => {
   let mockSpy
   let mockSocket = {
     remoteAddress: clientAddress,
-    port: clientPort,
-    name: `${clientPort}:${clientAddress}`
+    remotePort: clientPort
   }
+  let mockClient = {
+    address: 'clientAddress',
+    port: 2000,
+    name: 'name'
+  }
+  jest.mock('../lib/tcpClient', () => {
+    return function () {
+      return mockClient
+    }
+  })
 
   beforeEach(() => {
     server = new Server(serverPort, serverAddress)
@@ -44,7 +53,11 @@ describe('Server', () => {
   describe('createClient', () => {
     it('logs the new client connection', () => {
       server.createClient(mockSocket)
-      expect(console.log.mock.calls[0][0]).toBe(`${mockSocket.name} connected`)
+      expect(console.log.mock.calls[0][0]).toBe(`${mockClient.name} connected`)
+    })
+
+    it('returns the Client instance', () => {
+      expect(server.createClient(mockSocket)).toBe(mockClient)
     })
   })
   describe('closeConnection', () => {
