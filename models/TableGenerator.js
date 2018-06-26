@@ -13,4 +13,4 @@ const clientTest = new pg.Client(connectionStringTest);
 clientTest.connect();
 const queryTest = client2.query(
   'CREATE TABLE mail(id SERIAL PRIMARY KEY, email VARCHAR(200))');
-queryTest.on('end', () => { client2.end(); });
+queryTest.on('end', () => { clientTest.end(); });
