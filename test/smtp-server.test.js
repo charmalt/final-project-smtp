@@ -8,6 +8,7 @@ describe('Server', () => {
   let serverAddress = '127.0.0.1'
   let mockServer = { listen: () => {} }
   let mockSpy
+  let data = "String"
 
   beforeEach(() => {
     server = new Server(serverPort, serverAddress)
@@ -31,6 +32,12 @@ describe('Server', () => {
   it('tells the connection to listen on set port and address', () => {
     server.start()
     expect(mockSpy).toHaveBeenCalledWith(serverPort, serverAddress)
+  })
+
+  describe('parseData', () => {
+    it('formats data correctly', () => {
+      expect(server.parseData(data)).toEqual(data)
+    })
   })
 
 })
