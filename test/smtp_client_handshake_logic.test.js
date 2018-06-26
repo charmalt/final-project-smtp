@@ -29,8 +29,11 @@ describe('smtpClientHandshake module', function () {
     it('should respond to \'DATA\' with 354', function () {
       expect(smtpClientHandshake.parseMessage('DATA')).toEqual(354)
     })
-    it('should respone to \'\r\n.\r\n\' with 250', function () {
+    it('should respond to \'\r\n.\r\n\' with 250', function () {
       expect(smtpClientHandshake.parseMessage('\r\n.\r\n')).toEqual(250)
     })
+  })
+  it('should respond to \'QUIT\' with 221', function () {
+    expect(smtpClientHandshake.parseMessage('QUIT')).toEqual(221)
   })
 })
