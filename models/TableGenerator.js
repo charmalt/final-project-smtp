@@ -1,16 +1,17 @@
-const pg = require('pg');
-const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/mailbox';
+const pg = require('pg')
+const env = require('./config')
+const connectionString = process.env.DATABASE_URL || env['development']
 
-const client = new pg.Client(connectionString);
-client.connect();
+const client = new pg.Client(connectionString)
+client.connect()
 const query = client.query(
-  'CREATE TABLE mail(id SERIAL PRIMARY KEY, email VARCHAR(200))');
-query.on('end', () => { client.end(); });
+  'CREATE TABLE mail(id SERIAL PRIMARY KEY, email VARCHAR(200))')
+query.on('end', () => { client.end() })
 
-const connectionStringTest = process.env.DATABASE_URL || 'postgres://localhost:5432/testmailbox';
+const connectionStringTest = process.env.DATABASE_URL || env['test']
 
-const clientTest = new pg.Client(connectionStringTest);
-clientTest.connect();
+const clientTest = new pg.Client(connectionStringTest)
+clientTest.connect()
 const queryTest = clientTest.query(
-  'CREATE TABLE mail(id SERIAL PRIMARY KEY, email VARCHAR(200))');
-queryTest.on('end', () => { clientTest.end(); });
+  'CREATE TABLE mail(id SERIAL PRIMARY KEY, email VARCHAR(200))')
+queryTest.on('end', () => { clientTest.end() })
