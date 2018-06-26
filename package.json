@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "description": "A very very simple SMTP server",
   "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint src/js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +20,14 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/charmalt/final-project-smtp/issues"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.0"
   },
   "homepage": "https://github.com/charmalt/final-project-smtp#readme",
   "devDependencies": {
