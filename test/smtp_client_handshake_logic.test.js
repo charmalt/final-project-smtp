@@ -9,6 +9,9 @@ describe('smtpClientHandshake module', function () {
     smtpClientHandshake = new SmtpClientHandshake
   })
 
+  it('should set the dataMode to false on initialisation', function () {
+    expect(smtpClientHandshake.dataMode).toBeFalsy
+  })
   it('should respond to \'EHLO\' with 250', function () {
     expect(smtpClientHandshake.parseMessage('EHLO server')).toEqual(250)
   })
@@ -31,6 +34,14 @@ describe('smtpClientHandshake module', function () {
     })
     it('should respond to \'\r\n.\r\n\' with 250', function () {
       expect(smtpClientHandshake.parseMessage('\r\n.\r\n')).toEqual(250)
+    })
+    it('should set the dataMode to true on beginning of DATA', function () {
+      smtpClientHandshake.parseMessage('DATA')
+      expect(smtpClientHandshake.dataMode).toBeTruthy
+    })
+    it('should set the dataMode to false on end of DATA', function () {
+      smtpClientHandshake.parseMessage('\r\n.\r\n')
+      expect(smtpClientHandshake.dataMode).toBeFalsy
     })
   })
   it('should respond to \'QUIT\' with 221', function () {
