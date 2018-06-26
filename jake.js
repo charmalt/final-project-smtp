@@ -1,22 +1,13 @@
 //npm install -g jake
 
-//jake --jakefile jake.js makeDatabase
+//jake --jakefile jake.js makeDatabases
 
 desc('Create main local Databse');
-task('makeDatabase', {async: true}, function () {
+task('makeDatabases', {async: true}, function () {
   var cmds = [
-    'createdb mailbox;'
-  ];
-  jake.exec(cmds, {printStdout: true}, function () {
-    console.log('All tests passed.');
-    complete();
-  });
-});
-// jake --jakefile jake.js testDatabase
-desc('Create main local test Databse');
-task('testDatabase', {async: true}, function () {
-  var cmds = [
-    'createdb testmailbox;'
+    'createdb mailbox;',
+    'createdb testmailbox;',
+    'node models/TableGenerator.js'
   ];
   jake.exec(cmds, {printStdout: true}, function () {
     console.log('All tests passed.');
