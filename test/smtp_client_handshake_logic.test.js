@@ -21,7 +21,12 @@ describe('smtpClientHandshake module', function () {
   it('should respond to \'MAIL FROM: at@test.com\' with 250', function () {
     expect(smtpClientHandshake.parseMessage('MAIL FROM: at@test.com')).toEqual(250)
   })
-  it('should check if the message follows the correct order', function () {
-
+  it('should respond to \'RCPT TO\' with 250', function () {
+    expect(smtpClientHandshake.parseMessage('RCPT TO: at@test.com')).toEqual(250)
+  })
+  describe('data transfer', function () {
+    it('should respond to \'DATA\' w  ith 354', function () {
+      expect(smtpClientHandshake.parseMessage('DATA')).toEqual(354)
+    })
   })
 })
