@@ -32,6 +32,10 @@ describe('smtpClientHandshake module', function () {
     it('should respond to \'MAIL FROM: at@test.com\' with 250', function () {
       expect(smtpClientHandshake.parseMessage('MAIL FROM: at@test.com')).toEqual(250)
     })
+    it('should set messageContent.mailFrom to email address supplied', function () {
+      smtpClientHandshake.parseMessage('MAIL FROM: at@test.com')
+      expect(smtpClientHandshake.messageContent.mailFrom).toEqual('at@test.com')
+    })
   })
 
   describe('Processing of RCPT TO', function () {
