@@ -7,8 +7,10 @@ describe('TCPClient', () => {
   let mockSocket = {
     remoteAddress: clientAddress,
     remotePort: clientPort,
-    name: `${clientAddress}:${clientPort}`
+    name: `${clientAddress}:${clientPort}`,
+    write: jest.fn()
   }
+  let mockMessage = 'Test String'
 
   beforeEach(() => {
     client = new TCPClient(mockSocket)
@@ -28,5 +30,13 @@ describe('TCPClient', () => {
 
   it('stores the whole socket', () => {
     expect(client.socket).toBe(mockSocket)
+  })
+
+  describe('receiveMessage', () => {
+    it('writes a message to the socket', () => {
+      let mockWrite = jest.spyOn(mockSocket, 'write')
+      client.receiveMessage(mockMessage)
+      expect(mockWrite).toHaveBeenCalledWith(mockMessage)
+    })
   })
 })
