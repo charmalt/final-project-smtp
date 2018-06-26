@@ -25,4 +25,8 @@ describe('TCPClient', () => {
   it('creates the name', () => {
     expect(client.name).toBe(`${clientAddress}:${clientPort}`)
   })
+
+  it('stores the whole socket', () => {
+    expect(client.socket).toBe(mockSocket)
+  })
 })
