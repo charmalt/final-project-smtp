@@ -10,8 +10,12 @@ describe('Server', () => {
   let clientPort = 5001
   let serverAddress = '127.0.0.1'
   let clientAddress = '127.0.0.0'
-  let mockServer = { listen: () => {} }
+  let mockServer = {
+    listen: () => {},
+    close: () => {}
+  }
   let mockSpy
+  let serverCloseSpy
   let mockSocket = {
     remoteAddress: clientAddress,
     remotePort: clientPort
@@ -25,6 +29,7 @@ describe('Server', () => {
   beforeEach(() => {
     server = new TCPServer(serverPort, serverAddress)
     mockSpy = jest.spyOn(mockServer, 'listen')
+    serverCloseSpy = jest.spyOn(mockServer, 'close')
     net.createServer = () => { return mockServer }
     console.log = jest.fn()
   })
@@ -67,6 +72,20 @@ describe('Server', () => {
     it('logs the closed connection', () => {
       server.closeConnection(mockSocket)
       expect(console.log.mock.calls[0][0]).toBe(`${mockSocket.name} disconnected`)
+    })
+  })
+
+  describe('closeServer', () => {
+    it('closes server connection', () => {
+      server.start()
+      server.close()
+      expect(serverCloseSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('Logs the closed connection', () => {
+      server.start()
+      server.close()
+      expect(console.log.mock.calls[1][0]).toBe('Server closed')
     })
   })
 })
