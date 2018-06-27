@@ -107,5 +107,12 @@ describe('Server', () => {
       server.close()
       expect(socketSpy).toHaveBeenCalledTimes(1)
     })
+
+    it('logs the closed connection', () => {
+      server.start()
+      server.createClient(mockSocket)
+      server.close()
+      expect(server.clients).toHaveLength(0)
+    })
   })
 })
