@@ -40,7 +40,7 @@ describe('MTAQueue', () => {
 
   describe('takeFromQueue', () => {
     let messageOne = 'Message 1'
-    let messageTwo = 'Message 2'
+    let messageTwo = 'Message two'
 
     it('returns whatever is at messages[0]', () => {
       queue.messages = [messageOne]
