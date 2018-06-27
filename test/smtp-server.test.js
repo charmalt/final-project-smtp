@@ -1,5 +1,6 @@
 const SMTPServer = require('../lib/smtpServer')
 const TCPServer = require('../lib/tcpServer')
+const Handshake = require('../lib/smtpClientHandshakeLogic')
 jest.mock('../lib/tcpServer')
 
 describe('SMTPServer', () => {
@@ -18,8 +19,8 @@ describe('SMTPServer', () => {
     serverInitSpy = jest.spyOn(mockServer, 'init')
     serverStartSpy = jest.spyOn(mockServer, 'start')
     serverCloseSpy = jest.spyOn(mockServer, 'close')
-    TCPServer.mockImplementation((port, address) => {
-      mockServer.init(port, address)
+    TCPServer.mockImplementation((port, address, handshake) => {
+      mockServer.init(port, address, handshake)
       return mockServer
     })
   })
@@ -38,7 +39,7 @@ describe('SMTPServer', () => {
     })
 
     it('gives the correct port and address to the server', () => {
-      expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address)
+      expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address, Handshake)
     })
   })
 

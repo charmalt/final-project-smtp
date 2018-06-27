@@ -1,4 +1,5 @@
 const TCPConnectedClient = require('../lib/TCPConnectedClient.js')
+const SmtpClientHandshakeLogic = require('../lib/smtpClientHandshakeLogic.js')
 
 describe('TCPClient', () => {
   let client
@@ -11,9 +12,12 @@ describe('TCPClient', () => {
     write: jest.fn()
   }
   let mockMessage = 'Test String'
+  let mockHandshake = {
+    parseMessage: jest.fn()
+  }
 
   beforeEach(() => {
-    client = new TCPConnectedClient(mockSocket)
+    client = new TCPConnectedClient(mockSocket, mockHandshake)
   })
 
   it('stores the address', () => {
@@ -37,6 +41,14 @@ describe('TCPClient', () => {
       let mockWrite = jest.spyOn(mockSocket, 'write')
       client.receiveMessage(mockMessage)
       expect(mockWrite).toHaveBeenCalledWith(mockMessage)
+    })
+  })
+
+  describe('executeHandshake', () => {
+    it('parses message', () => {
+      let spyHandshake = jest.spyOn(mockHandshake, 'parseMessage')
+      client.parseMessage(mockMessage)
+      expect(spyHandshake).toHaveBeenCalledWith(mockMessage)
     })
   })
 })
