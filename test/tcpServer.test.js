@@ -67,6 +67,11 @@ describe('Server', () => {
     it('returns the Client instance', () => {
       expect(server.createClient(mockSocket)).toBe(mockClient)
     })
+
+    it('stores client in array', () => {
+      server.createClient(mockSocket)
+      expect(server.clients).toContain(mockClient)
+    })
   })
   describe('closeConnection', () => {
     it('logs the closed connection', () => {

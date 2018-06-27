@@ -6,10 +6,14 @@ describe('Feature Test', () => {
   beforeEach(() => {
     server = new SMTPServer()
     console.log = jest.fn()
+    server.start()
+  })
+
+  afterAll(() => {
+    server.close()
   })
 
   it('SMTP Server registers connection', () => {
-    server.start()
     expect(console.log.mock.calls[0][0]).toEqual('Server started')
   })
 })
