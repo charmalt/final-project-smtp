@@ -76,5 +76,10 @@ describe('TCPClient', () => {
       client.handleResponse(quitResponse)
       expect(mockDestroy).toHaveBeenCalledTimes(1)
     })
+
+    it('keeps connection open when not a 221 reponse', () => {
+      client.handleResponse(response)
+      expect(mockDestroy).toHaveBeenCalledTimes(0)
+    })
   })
 })
