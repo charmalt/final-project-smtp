@@ -5,12 +5,18 @@ jest.mock('../lib/tcpServer')
 describe('SMTPServer', () => {
   let server
   let mockServer = {
+    init: jest.fn(),
     start: jest.fn()
   }
+  let serverInitSpy
+  let serverStartSpy
 
   beforeEach(() => {
     server = new SMTPServer()
+    serverInitSpy = jest.spyOn(mockServer, 'init')
+    serverStartSpy = jest.spyOn(mockServer, 'start')
     TCPServer.mockImplementation((port, address) => {
+      mockServer.init(port, address)
       return mockServer
     })
   })
@@ -26,6 +32,10 @@ describe('SMTPServer', () => {
 
     it('creates a TCPServer', () => {
       expect(server.server).toBe(mockServer)
+    })
+
+    it('gives the correct port and address to the server', () => {
+      expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address)
     })
   })
 })
