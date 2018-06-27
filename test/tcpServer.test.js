@@ -20,10 +20,14 @@ describe('Server', () => {
     remoteAddress: clientAddress,
     remotePort: clientPort
   }
+  let mockSocket2 = {
+    destroy: () => {}
+  }
   let mockClient = {
     address: 'clientAddress',
     port: 2000,
-    name: 'name'
+    name: 'name',
+    socket: mockSocket2
   }
 
   beforeEach(() => {
@@ -75,12 +79,16 @@ describe('Server', () => {
   })
   describe('closeConnection', () => {
     it('logs the closed connection', () => {
-      server.closeConnection(mockSocket)
-      expect(console.log.mock.calls[0][0]).toBe(`${mockSocket.name} disconnected`)
+      server.closeConnection(mockClient)
+      expect(console.log.mock.calls[0][0]).toBe(`${mockClient.name} disconnected`)
     })
   })
 
   describe('closeServer', () => {
+    let socketSpy
+    beforeEach(() => {
+      socketSpy = jest.spyOn(mockSocket2, 'destroy')
+    })
     it('closes server connection', () => {
       server.start()
       server.close()
@@ -91,6 +99,13 @@ describe('Server', () => {
       server.start()
       server.close()
       expect(console.log.mock.calls[1][0]).toBe('Server closed')
+    })
+
+    it('destroys socket connection', () => {
+      server.start()
+      server.createClient(mockSocket)
+      server.close()
+      expect(socketSpy).toHaveBeenCalledTimes(1)
     })
   })
 })
