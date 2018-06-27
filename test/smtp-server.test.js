@@ -38,4 +38,8 @@ describe('SMTPServer', () => {
       expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address)
     })
   })
+
+  describe('injected constructor', () => {
+    
+  })
 })
