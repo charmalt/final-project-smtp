@@ -6,15 +6,18 @@ describe('SMTPServer', () => {
   let server
   let mockServer = {
     init: jest.fn(),
-    start: jest.fn()
+    start: jest.fn(),
+    close: jest.fn()
   }
   let serverInitSpy
   let serverStartSpy
+  let serverCloseSpy
 
   beforeEach(() => {
     server = new SMTPServer()
     serverInitSpy = jest.spyOn(mockServer, 'init')
     serverStartSpy = jest.spyOn(mockServer, 'start')
+    serverCloseSpy = jest.spyOn(mockServer, 'close')
     TCPServer.mockImplementation((port, address) => {
       mockServer.init(port, address)
       return mockServer
@@ -63,4 +66,10 @@ describe('SMTPServer', () => {
     })
   })
 
+  describe('close', () => {
+    it('calls close method on tcpServer', () => {
+      server.close()
+      expect(serverCloseSpy).toHaveBeenCalledTimes(1)
+    })
+  })
 })
