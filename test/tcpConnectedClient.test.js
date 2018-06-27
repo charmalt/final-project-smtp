@@ -1,5 +1,4 @@
 const TCPConnectedClient = require('../lib/TCPConnectedClient.js')
-const SmtpClientHandshakeLogic = require('../lib/smtpClientHandshakeLogic.js')
 
 describe('TCPClient', () => {
   let client
@@ -14,7 +13,8 @@ describe('TCPClient', () => {
   }
   let mockMessage = 'Test String'
   let mockHandshake = {
-    parseMessage: jest.fn(() => 250)
+    parseMessage: jest.fn(() => 250),
+    responses: { quit: 221 }
   }
   let mockWrite
   let mockDestroy
