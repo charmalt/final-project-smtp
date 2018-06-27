@@ -1,0 +1,10 @@
+.load MailClient.js
+var mail = new MailClient(1337, '127.0.0.1')
+mail.send()
+
+
+.load ./lib/smtpServer.js
+server = new SMTPServer()
+server.start()
+
+console.log('\033c')
