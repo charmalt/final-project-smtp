@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "jest",
+    "test": "jest --forceExit --coverage",
     "lint": "eslint src/js"
   },
   "repository": {
@@ -32,5 +32,10 @@
     "eslint-plugin-standard": "^3.1.0",
     "jest": "^23.2.0",
     "standard": "^11.0.1"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
   }
 }
