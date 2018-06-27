@@ -15,4 +15,21 @@ describe('MTAQueue', () => {
   it('empty is true', () => {
     expect(queue.empty).toBeTruthy()
   })
+
+  describe('addToQueue', () => {
+    let message
+
+    beforeEach(() => {
+      message = 'Any old string'
+      queue.addToQueue(message)
+    })
+
+    it('addes message to messages', () => {
+      expect(queue.messages).toContain(message)
+    })
+
+    it('makes this.empty equal false', () => {
+      expect(queue.empty).toBeFalsy()
+    })
+  })
 })
