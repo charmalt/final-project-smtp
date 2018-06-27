@@ -16,9 +16,11 @@ describe('TCPClient', () => {
   let mockHandshake = {
     parseMessage: jest.fn()
   }
+  let mockWrite
 
   beforeEach(() => {
     client = new TCPConnectedClient(mockSocket, mockHandshake)
+    mockWrite = jest.spyOn(mockSocket, 'write')
   })
 
   it('stores the address', () => {
@@ -39,7 +41,6 @@ describe('TCPClient', () => {
 
   describe('receiveMessage', () => {
     it('writes a message to the socket', () => {
-      let mockWrite = jest.spyOn(mockSocket, 'write')
       client.receiveMessage(mockMessage)
       expect(mockWrite).toHaveBeenCalledWith(mockMessage)
     })
@@ -58,6 +59,14 @@ describe('TCPClient', () => {
       let mockDestroy = jest.spyOn(mockSocket, 'destroy')
       client.closeConnection()
       expect(mockDestroy).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('handleResponse', () => {
+    const response = 250
+    it('sends response back to client', () => {
+      client.handleResponse(response)
+      expect(mockWrite).toHaveBeenCalledWith(response)
     })
   })
 })
