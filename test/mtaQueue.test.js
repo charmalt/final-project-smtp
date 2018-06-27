@@ -1,4 +1,3 @@
-/* global describe, it, expect, beforeEach */
 const MTAQueue = require('../lib/mtaQueue')
 
 describe('MTAQueue', () => {
