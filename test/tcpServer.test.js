@@ -27,7 +27,8 @@ describe('Server', () => {
     address: 'clientAddress',
     port: 2000,
     name: 'name',
-    socket: mockSocket2
+    socket: mockSocket2,
+    closeConnection: jest.fn()
   }
   class MockHandshakeConstructor {}
 
@@ -86,9 +87,9 @@ describe('Server', () => {
   })
 
   describe('closeServer', () => {
-    let socketSpy
+    let socketDestroySpy
     beforeEach(() => {
-      socketSpy = jest.spyOn(mockSocket2, 'destroy')
+      socketDestroySpy = jest.spyOn(mockClient, 'closeConnection')
     })
     it('closes server connection', () => {
       server.start()
@@ -106,7 +107,7 @@ describe('Server', () => {
       server.start()
       server.createClient(mockSocket)
       server.close()
-      expect(socketSpy).toHaveBeenCalledTimes(1)
+      expect(socketDestroySpy).toHaveBeenCalledTimes(1)
     })
 
     it('logs the closed connection', () => {
