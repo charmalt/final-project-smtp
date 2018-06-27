@@ -4,13 +4,13 @@ const MTAQueue = require('../lib/mtaQueue')
 describe('MTAQueue', () => {
   let queue
   let mailDeliveryAgent = {
-    queueNotEmpty: jest.fn()
+    queueNotEmpty: jest.fn(),
   }
-  let mdaSpy
+  let mdaQueueNotEmptySpy
 
   beforeEach(() => {
     queue = new MTAQueue(mailDeliveryAgent)
-    mdaSpy = jest.spyOn(mailDeliveryAgent, 'queueNotEmpty')
+    mdaQueueNotEmptySpy = jest.spyOn(mailDeliveryAgent, 'queueNotEmpty')
   })
 
   it('has an empty messages array', () => {
@@ -52,6 +52,12 @@ describe('MTAQueue', () => {
       queue.takeFromQueue()
       expect(queue.messages).toEqual([messageTwo])
     })
+
+    it('makes this.empty equal true when messages emptied', () => {
+      queue.addToQueue(messageOne)
+      queue.takeFromQueue()
+      expect(queue.empty).toBeTruthy()
+    })
   })
 
   describe('_makeNotEmpty', () => {
@@ -62,14 +68,22 @@ describe('MTAQueue', () => {
 
     it('Tells the MDA the queue is not empty', () => {
       queue._makeNotEmpty()
-      expect(mdaSpy).toHaveBeenCalled()
+      expect(mdaQueueNotEmptySpy).toHaveBeenCalled()
     })
 
     it('does nothing if queue already not empty', () => {
-      mdaSpy.mockClear()
+      mdaQueueNotEmptySpy.mockClear()
       queue.empty = false
       queue._makeNotEmpty()
-      expect(mdaSpy).not.toHaveBeenCalled()
+      expect(mdaQueueNotEmptySpy).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('_makeEmpty', () => {
+    it('makes empty true if messages empty', () => {
+      queue.empty = false
+      queue._makeEmpty()
+      expect(queue.empty).toBeTruthy()
     })
   })
 })
