@@ -40,6 +40,19 @@ describe('SMTPServer', () => {
   })
 
   describe('injected constructor', () => {
-    
+    let injectedPort, injectedAddress
+    beforeEach(() => {
+      injectedPort = 5001
+      injectedAddress = 'localhost'
+      server = new SMTPServer(injectedPort, injectedAddress)
+    })
+
+    it('allows a port to be defined', () => {
+      expect(server.port).toBe(injectedPort)
+    })
+
+    it('allows an address to be defined', () => {
+      expect(server.address).toBe(injectedAddress)
+    })
   })
 })
