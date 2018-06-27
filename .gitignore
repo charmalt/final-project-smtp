@@ -20,9 +20,6 @@ build/Release
 # Dependency directories
 node_modules/
 
-#ES Lint config
-.eslintrc.js
-
 # Optional npm cache directory
 .npm
 
@@ -37,4 +34,3 @@ node_modules/
 
 package-lock.json
 .idea/
-
