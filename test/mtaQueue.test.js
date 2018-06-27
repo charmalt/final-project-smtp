@@ -38,19 +38,37 @@ describe('MTAQueue', () => {
     })
   })
 
-  describe('makeNotEmpty', () => {
-    it('makes empty true if it was empty', () => {
-      queue.makeNotEmpty()
+  describe('takeFromQueue', () => {
+    let messageOne = 'Message 1'
+    let messageTwo = 'Message 2'
+
+    it('returns whatever is at messages[0]', () => {
+      queue.messages = [messageOne]
+      expect(queue.takeFromQueue()).toBe(messageOne)
+    })
+
+    it('deletes whatever is at messages[0]', () => {
+      queue.messages = [messageOne, messageTwo]
+      queue.takeFromQueue()
+      expect(queue.messages).toEqual([messageTwo])
+    })
+  })
+
+  describe('_makeNotEmpty', () => {
+    it('makes empty false if messages not empty', () => {
+      queue._makeNotEmpty()
       expect(queue.empty).toBeFalsy()
     })
+
     it('Tells the MDA the queue is not empty', () => {
-      queue.makeNotEmpty()
+      queue._makeNotEmpty()
       expect(mdaSpy).toHaveBeenCalled()
     })
+
     it('does nothing if queue already not empty', () => {
       mdaSpy.mockClear()
       queue.empty = false
-      queue.makeNotEmpty()
+      queue._makeNotEmpty()
       expect(mdaSpy).not.toHaveBeenCalled()
     })
   })
