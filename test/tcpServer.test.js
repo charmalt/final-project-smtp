@@ -28,7 +28,8 @@ describe('Server', () => {
     port: 2000,
     name: 'name',
     socket: mockSocket2,
-    closeConnection: jest.fn()
+    closeConnection: jest.fn(),
+    parseMessage: jest.fn()
   }
   class MockHandshakeConstructor {}
 
@@ -115,6 +116,20 @@ describe('Server', () => {
       server.createClient(mockSocket)
       server.close()
       expect(server.clients).toHaveLength(0)
+    })
+  })
+
+  describe('handleData', () => {
+    let data = 1234
+    it('Console logs the data string', () => {
+      server.handleData(mockClient, data)
+      expect(console.log.mock.calls[0][0]).toBe(data.toString())
+    })
+
+    it('Tells the client to parse the message', () => {
+      let spyClientParse = jest.spyOn(mockClient, 'parseMessage')
+      server.handleData(mockClient, data)
+      expect(spyClientParse).toHaveBeenCalledWith(data.toString())
     })
   })
 })

@@ -14,7 +14,7 @@ describe('TCPClient', () => {
   }
   let mockMessage = 'Test String'
   let mockHandshake = {
-    parseMessage: jest.fn()
+    parseMessage: jest.fn(() => 250)
   }
   let mockWrite
   let mockDestroy
@@ -69,7 +69,7 @@ describe('TCPClient', () => {
     const quitResponse = 221
     it('sends response back to client', () => {
       client.handleResponse(response)
-      expect(mockWrite).toHaveBeenCalledWith(response)
+      expect(mockWrite).toHaveBeenCalledWith(response.toString())
     })
 
     it('closes connection on 221 response', () => {
