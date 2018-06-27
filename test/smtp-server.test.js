@@ -55,4 +55,12 @@ describe('SMTPServer', () => {
       expect(server.address).toBe(injectedAddress)
     })
   })
+
+  describe('starts tcpServer', () => {
+    it('calls start method on tcpServer', () => {
+      server.start()
+      expect(serverStartSpy).toHaveBeenCalledTimes(1)
+    })
+  })
+
 })
