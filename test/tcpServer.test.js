@@ -1,4 +1,4 @@
-const Server = require('../lib/smtp-server')
+const TCPServer = require('../lib/tcpServer')
 const TCPConnectedClient = require('../lib/TCPConnectedClient')
 jest.mock('../lib/TCPConnectedClient')
 jest.mock('net')
@@ -23,7 +23,7 @@ describe('Server', () => {
   }
 
   beforeEach(() => {
-    server = new Server(serverPort, serverAddress)
+    server = new TCPServer(serverPort, serverAddress)
     mockSpy = jest.spyOn(mockServer, 'listen')
     net.createServer = () => { return mockServer }
     console.log = jest.fn()
