@@ -9,7 +9,8 @@ describe('TCPClient', () => {
     remoteAddress: clientAddress,
     remotePort: clientPort,
     name: `${clientAddress}:${clientPort}`,
-    write: jest.fn()
+    write: jest.fn(),
+    destroy: jest.fn()
   }
   let mockMessage = 'Test String'
   let mockHandshake = {
@@ -49,6 +50,14 @@ describe('TCPClient', () => {
       let spyHandshake = jest.spyOn(mockHandshake, 'parseMessage')
       client.parseMessage(mockMessage)
       expect(spyHandshake).toHaveBeenCalledWith(mockMessage)
+    })
+  })
+
+  describe('closeConnection', () => {
+    it('destroys the socket connection', () => {
+      let mockDestroy = jest.spyOn(mockSocket, 'destroy')
+      client.closeConnection()
+      expect(mockDestroy).toHaveBeenCalledTimes(1)
     })
   })
 })
