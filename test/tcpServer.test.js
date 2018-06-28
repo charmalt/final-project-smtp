@@ -27,11 +27,14 @@ describe('Server', () => {
     address: 'clientAddress',
     port: 2000,
     name: 'name',
-    socket: mockSocket2
+    socket: mockSocket2,
+    closeConnection: jest.fn(),
+    parseMessage: jest.fn()
   }
+  class MockHandshakeConstructor {}
 
   beforeEach(() => {
-    server = new TCPServer(serverPort, serverAddress)
+    server = new TCPServer(serverPort, serverAddress, MockHandshakeConstructor)
     mockSpy = jest.spyOn(mockServer, 'listen')
     serverCloseSpy = jest.spyOn(mockServer, 'close')
     net.createServer = () => { return mockServer }
@@ -85,9 +88,9 @@ describe('Server', () => {
   })
 
   describe('closeServer', () => {
-    let socketSpy
+    let socketDestroySpy
     beforeEach(() => {
-      socketSpy = jest.spyOn(mockSocket2, 'destroy')
+      socketDestroySpy = jest.spyOn(mockClient, 'closeConnection')
     })
     it('closes server connection', () => {
       server.start()
@@ -105,7 +108,7 @@ describe('Server', () => {
       server.start()
       server.createClient(mockSocket)
       server.close()
-      expect(socketSpy).toHaveBeenCalledTimes(1)
+      expect(socketDestroySpy).toHaveBeenCalledTimes(1)
     })
 
     it('logs the closed connection', () => {
@@ -113,6 +116,20 @@ describe('Server', () => {
       server.createClient(mockSocket)
       server.close()
       expect(server.clients).toHaveLength(0)
+    })
+  })
+
+  describe('handleData', () => {
+    let data = 1234
+    it('Console logs the data string', () => {
+      server.handleData(mockClient, data)
+      expect(console.log.mock.calls[0][0]).toBe(data.toString())
+    })
+
+    it('Tells the client to parse the message', () => {
+      let spyClientParse = jest.spyOn(mockClient, 'parseMessage')
+      server.handleData(mockClient, data)
+      expect(spyClientParse).toHaveBeenCalledWith(data.toString())
     })
   })
 })
