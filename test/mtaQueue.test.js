@@ -85,4 +85,15 @@ describe('MTAQueue', () => {
       expect(queue.empty).toBeTruthy()
     })
   })
+
+  describe('isEmpty', () => {
+    it('returns true', () => {
+      expect(queue.isEmpty()).toBeTruthy()
+    })
+
+    it('returns false', () => {
+      queue.empty = false
+      expect(queue.isEmpty()).toBeFalsy()
+    })
+  })
 })
