@@ -102,5 +102,10 @@ describe('MTAQueue', () => {
       queue.replaceInQueue(messageTwo)
       expect(queue.messages).toEqual([messageTwo, messageOne])
     })
+
+    it('makes this.empty equal false', () => {
+      queue.replaceInQueue(messageTwo)
+      expect(queue.empty).toBeFalsy()
+    })
   })
 })
