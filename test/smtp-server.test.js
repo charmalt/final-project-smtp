@@ -1,7 +1,9 @@
 const SMTPServer = require('../lib/smtpServer')
 const TCPServer = require('../lib/tcpServer')
+const MTAQueue = require('../lib/mtaQueue')
 const Handshake = require('../lib/smtpClientHandshakeLogic')
 jest.mock('../lib/tcpServer')
+jest.mock('../lib/mtaQueue')
 
 describe('SMTPServer', () => {
   let server
@@ -13,15 +15,21 @@ describe('SMTPServer', () => {
   let serverInitSpy
   let serverStartSpy
   let serverCloseSpy
+  let mockQueue = {
+    init: jest.fn()
+  }
 
   beforeEach(() => {
     server = new SMTPServer()
     serverInitSpy = jest.spyOn(mockServer, 'init')
     serverStartSpy = jest.spyOn(mockServer, 'start')
     serverCloseSpy = jest.spyOn(mockServer, 'close')
-    TCPServer.mockImplementation((port, address, handshake) => {
-      mockServer.init(port, address, handshake)
+    TCPServer.mockImplementation((port, address, handshake, queue) => {
+      mockServer.init(port, address, handshake, queue)
       return mockServer
+    })
+    MTAQueue.mockImplementation(() => {
+      return mockQueue
     })
   })
 
@@ -38,8 +46,12 @@ describe('SMTPServer', () => {
       expect(server.server).toBe(mockServer)
     })
 
+    it('creates a MTAQueue', () => {
+      expect(server.queue).toBe(mockQueue)
+    })
+
     it('gives the correct port and address to the server', () => {
-      expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address, Handshake)
+      expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address, Handshake, mockQueue)
     })
   })
 

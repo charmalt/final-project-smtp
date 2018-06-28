@@ -9,6 +9,6 @@ describe('Database Integration', () => {
   })
 
   it('Post method does not throw a error', () => {
-    expect(() => { db.post('New Email: no subject') }).not.toThrow()
+    expect(() => { db.post('john@john', 'daniel@daniel', 'thebody') }).not.toThrow()
   })
 })

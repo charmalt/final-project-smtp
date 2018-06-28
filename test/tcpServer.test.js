@@ -1,6 +1,6 @@
 const TCPServer = require('../lib/tcpServer')
-const TCPConnectedClient = require('../lib/TCPConnectedClient')
-jest.mock('../lib/TCPConnectedClient')
+const TCPConnectedClient = require('../lib/tcpConnectedClient')
+jest.mock('../lib/tcpConnectedClient')
 jest.mock('net')
 
 describe('Server', () => {
@@ -31,10 +31,11 @@ describe('Server', () => {
     closeConnection: jest.fn(),
     parseMessage: jest.fn()
   }
+  let mockQueue = {}
   class MockHandshakeConstructor {}
 
   beforeEach(() => {
-    server = new TCPServer(serverPort, serverAddress, MockHandshakeConstructor)
+    server = new TCPServer(serverPort, serverAddress, MockHandshakeConstructor, mockQueue)
     mockSpy = jest.spyOn(mockServer, 'listen')
     serverCloseSpy = jest.spyOn(mockServer, 'close')
     net.createServer = () => { return mockServer }

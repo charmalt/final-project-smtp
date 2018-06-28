@@ -3,9 +3,11 @@ const MTAQueue = require('../lib/mtaQueue')
 describe('MTAQueue', () => {
   let queue
   let mailDeliveryAgent = {
-    queueNotEmpty: jest.fn(),
+    queueNotEmpty: jest.fn()
   }
   let mdaQueueNotEmptySpy
+  let messageOne = 'Message 1'
+  let messageTwo = 'Message two'
 
   beforeEach(() => {
     queue = new MTAQueue(mailDeliveryAgent)
@@ -38,9 +40,6 @@ describe('MTAQueue', () => {
   })
 
   describe('takeFromQueue', () => {
-    let messageOne = 'Message 1'
-    let messageTwo = 'Message two'
-
     it('returns whatever is at messages[0]', () => {
       queue.messages = [messageOne]
       expect(queue.takeFromQueue()).toBe(messageOne)
@@ -67,7 +66,7 @@ describe('MTAQueue', () => {
 
     it('Tells the MDA the queue is not empty', () => {
       queue._makeNotEmpty()
-      expect(mdaQueueNotEmptySpy).toHaveBeenCalled()
+      expect(mdaQueueNotEmptySpy).toHaveBeenCalledWith(queue)
     })
 
     it('does nothing if queue already not empty', () => {
@@ -83,6 +82,30 @@ describe('MTAQueue', () => {
       queue.empty = false
       queue._makeEmpty()
       expect(queue.empty).toBeTruthy()
+    })
+  })
+
+  describe('isEmpty', () => {
+    it('returns true', () => {
+      expect(queue.isEmpty()).toBeTruthy()
+    })
+
+    it('returns false', () => {
+      queue.empty = false
+      expect(queue.isEmpty()).toBeFalsy()
+    })
+  })
+
+  describe('replaceInQueue', () => {
+    it('replaces a message at the front of the queue', () => {
+      queue.addToQueue(messageOne)
+      queue.replaceInQueue(messageTwo)
+      expect(queue.messages).toEqual([messageTwo, messageOne])
+    })
+
+    it('makes this.empty equal false', () => {
+      queue.replaceInQueue(messageTwo)
+      expect(queue.empty).toBeFalsy()
     })
   })
 })
