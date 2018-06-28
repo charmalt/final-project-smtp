@@ -67,7 +67,7 @@ describe('MTAQueue', () => {
 
     it('Tells the MDA the queue is not empty', () => {
       queue._makeNotEmpty()
-      expect(mdaQueueNotEmptySpy).toHaveBeenCalled()
+      expect(mdaQueueNotEmptySpy).toHaveBeenCalledWith(queue)
     })
 
     it('does nothing if queue already not empty', () => {
