@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "jest --forceExit --coverage",
+    "test": "jest --forceExit --coverage --runInBand",
     "lint": "eslint src/js"
   },
   "repository": {
