@@ -15,7 +15,6 @@ describe('SMTPServer', () => {
   let serverInitSpy
   let serverStartSpy
   let serverCloseSpy
-  let queueSpy
   let mockQueue = {
     init: jest.fn()
   }
@@ -25,7 +24,6 @@ describe('SMTPServer', () => {
     serverInitSpy = jest.spyOn(mockServer, 'init')
     serverStartSpy = jest.spyOn(mockServer, 'start')
     serverCloseSpy = jest.spyOn(mockServer, 'close')
-    queueSpy = jest.spyOn(mockQueue, 'init')
     TCPServer.mockImplementation((port, address, handshake, queue) => {
       mockServer.init(port, address, handshake, queue)
       return mockServer

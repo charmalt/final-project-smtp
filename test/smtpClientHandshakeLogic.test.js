@@ -1,10 +1,7 @@
 /* global describe, it, expect, beforeEach, xit */
 const SmtpClientHandshake = require('../lib/smtpClientHandshakeLogic')
 
-
-
 describe('smtpClientHandshake module', function () {
-
   let mockQueue = { addToQueue: jest.fn() }
   let queueSpy
   let smtpClientHandshake

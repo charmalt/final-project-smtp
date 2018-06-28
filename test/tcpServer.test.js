@@ -1,6 +1,6 @@
 const TCPServer = require('../lib/tcpServer')
-const TCPConnectedClient = require('../lib/TCPConnectedClient')
-jest.mock('../lib/TCPConnectedClient')
+const TCPConnectedClient = require('../lib/tcpConnectedClient')
+jest.mock('../lib/tcpConnectedClient')
 jest.mock('net')
 
 describe('Server', () => {

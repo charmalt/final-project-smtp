@@ -1,5 +1,4 @@
 const SMTPServer = require('../lib/smtpServer')
-const TCPServer = require('../lib/tcpServer')
 
 describe('Feature Test', () => {
   let server

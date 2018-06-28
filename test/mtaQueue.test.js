@@ -3,7 +3,7 @@ const MTAQueue = require('../lib/mtaQueue')
 describe('MTAQueue', () => {
   let queue
   let mailDeliveryAgent = {
-    queueNotEmpty: jest.fn(),
+    queueNotEmpty: jest.fn()
   }
   let mdaQueueNotEmptySpy
   let messageOne = 'Message 1'

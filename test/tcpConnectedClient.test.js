@@ -1,4 +1,4 @@
-const TCPConnectedClient = require('../lib/TCPConnectedClient.js')
+const TCPConnectedClient = require('../lib/tcpConnectedClient.js')
 
 describe('TCPClient', () => {
   let client
