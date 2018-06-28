@@ -3,11 +3,11 @@ const env = require('./config')
 const connectionString = env['test'] || env['development']
 
 class Database {
-  post (message) {
+  post (mailto, mailfrom, mailbody) {
     const client = new pg.Client(connectionString)
     client.connect()
     const query = client.query(
-      `INSERT INTO mail (email) VALUES('${message}')`)
+      `INSERT INTO mail (mailto, mailfrom, mailbody) VALUES('${mailto}', '${mailfrom}', '${mailbody}')`)
     query.on('end', () => { client.end() })
   }
 }
