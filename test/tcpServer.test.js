@@ -31,10 +31,11 @@ describe('Server', () => {
     closeConnection: jest.fn(),
     parseMessage: jest.fn()
   }
+  let mockQueue = {}
   class MockHandshakeConstructor {}
 
   beforeEach(() => {
-    server = new TCPServer(serverPort, serverAddress, MockHandshakeConstructor)
+    server = new TCPServer(serverPort, serverAddress, MockHandshakeConstructor, mockQueue)
     mockSpy = jest.spyOn(mockServer, 'listen')
     serverCloseSpy = jest.spyOn(mockServer, 'close')
     net.createServer = () => { return mockServer }

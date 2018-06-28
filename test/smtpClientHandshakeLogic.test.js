@@ -5,13 +5,18 @@ const SmtpClientHandshake = require('../lib/smtpClientHandshakeLogic')
 
 describe('smtpClientHandshake module', function () {
 
+  let mockQueue = { addToQueue: jest.fn() }
+  let queueSpy
+  let smtpClientHandshake
+
   beforeEach(function () {
-    smtpClientHandshake = new SmtpClientHandshake
+    queueSpy = jest.spyOn(mockQueue, 'addToQueue')
+    smtpClientHandshake = new SmtpClientHandshake(mockQueue)
   })
 
   describe('Initialisation', function () {
     it('should set the dataMode to false on initialisation', function () {
-      expect(smtpClientHandshake.dataMode).toBeFalsy
+      expect(smtpClientHandshake.dataMode).toBeFalsy()
     })
   })
 
@@ -82,6 +87,13 @@ describe('smtpClientHandshake module', function () {
   describe('Processing of QUIT', function () {
     it('should respond to \'QUIT\' with 221', function () {
       expect(smtpClientHandshake.parseMessage('QUIT')).toEqual(221)
+    })
+  })
+
+  describe('addToQueue', () => {
+    it('add message to the queue', () => {
+      smtpClientHandshake.addToQueue()
+      expect(queueSpy).toHaveBeenCalledTimes(1)
     })
   })
 })
