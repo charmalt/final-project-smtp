@@ -10,13 +10,6 @@ class Database {
       `INSERT INTO mail (email) VALUES('${message}')`)
     query.on('end', () => { client.end() })
   }
-  // view () {
-  //   const client = new pg.Client(connectionString)
-  //   client.connect()
-  //   const query = client.query(
-  //     `SELECT * FROM `)
-  //   query.on('end', () => { client.end() })
-  // }
 }
 
 module.exports = Database
