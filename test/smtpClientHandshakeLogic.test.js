@@ -12,6 +12,7 @@ describe('smtpClientHandshake module', function () {
   beforeEach(function () {
     queueSpy = jest.spyOn(mockQueue, 'addToQueue')
     smtpClientHandshake = new SmtpClientHandshake(mockQueue)
+    queueSpy.mockClear()
   })
 
   describe('Initialisation', function () {
@@ -87,6 +88,11 @@ describe('smtpClientHandshake module', function () {
   describe('Processing of QUIT', function () {
     it('should respond to \'QUIT\' with 221', function () {
       expect(smtpClientHandshake.parseMessage('QUIT')).toEqual(221)
+    })
+
+    it('should add message to queue', () => {
+      smtpClientHandshake.parseMessage('QUIT')
+      expect(queueSpy).toHaveBeenCalledTimes(1)
     })
   })
 
