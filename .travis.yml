@@ -1,3 +1,10 @@
 language: node_js
 node_js:
-  - "8.11.2"
+ - "8.11.2"
+services:
+ - postrgresql
+install:
+ - npm install -g jake
+ - npm install
+before-script:
+ - jake --jakefile jake.js makeDatabases
