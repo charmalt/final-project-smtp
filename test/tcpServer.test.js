@@ -81,10 +81,33 @@ describe('Server', () => {
       expect(server.clients).toContain(mockClient)
     })
   })
+
   describe('closeConnection', () => {
     it('logs the closed connection', () => {
       server.closeConnection(mockClient)
       expect(console.log.mock.calls[0][0]).toBe(`${mockClient.name} disconnected`)
+    })
+  })
+
+  describe('_handleSocketData', () => {
+    it('calls socket.on', () => {
+      let mockSocket3 = {
+        on: jest.fn()
+      }
+      let spyMockSocket3 = jest.spyOn(mockSocket3, 'on')
+      server._handleSocketData(mockSocket3)
+      expect(spyMockSocket3).toHaveBeenCalled()
+    })
+  })
+
+  describe('_handleSocketEnd', () => {
+    it('calls socket.on', () => {
+      let mockSocket4 = {
+        on: jest.fn()
+      }
+      let spyMockSocket4 = jest.spyOn(mockSocket4, 'on')
+      server._handleSocketData(mockSocket4)
+      expect(spyMockSocket4).toHaveBeenCalled()
     })
   })
 
