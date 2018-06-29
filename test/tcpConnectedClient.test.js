@@ -62,6 +62,12 @@ describe('TCPClient', () => {
       client.closeConnection()
       expect(mockDestroy).toHaveBeenCalledTimes(1)
     })
+    it("calls console.log to notify dicsconnection", () => {
+      console.log = jest.fn()
+      client.closeConnection()
+      expect(console.log).toHaveBeenCalledWith(`127.0.0.0:5001 Disconnected`)
+    })
+
   })
 
   describe('handleResponse', () => {
@@ -80,6 +86,12 @@ describe('TCPClient', () => {
     it('keeps connection open when not a 221 reponse', () => {
       client.handleResponse(response)
       expect(mockDestroy).toHaveBeenCalledTimes(0)
+    })
+    it('does not run #receiveMessage if response is undefined', function () {
+      let response = undefined
+      receveMessageSpy = jest.spyOn(client, 'receiveMessage')
+      client.handleResponse(response)
+      expect(receveMessageSpy).not.toHaveBeenCalled()
     })
   })
 })
