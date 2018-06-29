@@ -4,14 +4,13 @@ class SMTPDbInterface {
   }
 
   pull () {
-    return this.connection.query(`select * from mail`)
-      .then((res) => {
-        return res
-      })
-      .catch((err) => {
+    return this.connection.query(`select * from mail`, (err, res) => {
+      if (err) {
         console.log(err.stack)
-        return false
-      })
+      } else {
+        console.log(res.rows[0])
+      }
+    })
   }
 }
 
