@@ -12,7 +12,7 @@ describe('Database Connection', () => {
   })
 
   it('add to database', async () => {
-    await expect(smtpInterface.post('mailto', 'mailfrom', 'mailbody'))
-
+    let result = await smtpInterface.post('mailto', 'mailfrom', 'mailbody')
+    await expect(result).toBeTruthy()
   })
 })
