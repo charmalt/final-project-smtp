@@ -1,19 +1,35 @@
-const POPDbInterface = require('../models/smtpDBInterface')
+const SMTPDbInterface = require('../models/smtpDBInterface')
 
 describe('SMTPDbInterface', () => {
-  let popDbInterface
-  let mockConnection = { query: jest.fn(() => { return new Promise((resolve, reject) => { resolve('DATA') }) }) }
-  let mockFailedConnection = { query: jest.fn(() => { return new Promise((resolve, reject) => { reject(new Error('FAIL')) }) }) }
+  let smtpDbInterface
+  let mockConnection = {
+    client: {
+      query: jest.fn(() => {
+        return new Promise((resolve, reject) => {
+          resolve('DATA')
+        })
+      })
+    }
+  }
+  let mockFailedConnection = {
+    client: {
+      query: jest.fn(() => {
+        return new Promise((resolve, reject) => {
+          reject(new Error('FAIL'))
+        })
+      })
+    }
+  }
 
   it('returns the data when response resolves', async () => {
-    popDbInterface = new POPDbInterface(mockConnection)
-    let result = await popDbInterface.pull()
+    smtpDbInterface = new SMTPDbInterface(mockConnection)
+    let result = await smtpDbInterface.post('word', 'word', 'word')
     expect(result).toEqual('DATA')
   })
 
   it('returns null if there is an error', async () => {
-    popDbInterface = new POPDbInterface(mockFailedConnection)
-    let result = await popDbInterface.pull()
+    smtpDbInterface = new SMTPDbInterface(mockFailedConnection)
+    let result = await smtpDbInterface.post('word', 'word', 'word')
     expect(result).toBeFalsy()
   })
 })

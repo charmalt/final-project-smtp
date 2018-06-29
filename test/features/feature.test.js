@@ -1,4 +1,4 @@
-const SMTPServer = require('../lib/smtpServer')
+const SMTPServer = require('../../lib/smtpServer')
 
 describe('Feature Test', () => {
   let server
