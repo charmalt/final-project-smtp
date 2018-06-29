@@ -1,9 +1,10 @@
-const Client = require('pg').Client
+const pg = require('pg')
 const env = require('./config')
 
 class DBConnection {
-  constructor (dbClient = new Client(env['test'])) {
+  constructor (dbClient = new pg.Client(env['test'])) {
     this.client = dbClient
+    this.client.connect()
   }
 }
 

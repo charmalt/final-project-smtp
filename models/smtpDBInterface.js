@@ -3,14 +3,8 @@ class SMTPDbInterface {
     this.connection = connection
   }
 
-  pull () {
-    return this.connection.query(`select * from mail`, (err, res) => {
-      if (err) {
-        console.log(err.stack)
-      } else {
-        console.log(res.rows[0])
-      }
-    })
+  async post (mailto, mailfrom, mailbody) {
+    await this.connection.client.query(`INSERT INTO mail (mailto, mailfrom, mailbody) VALUES('${mailto}', '${mailfrom}', '${mailbody}')`)
   }
 }
 

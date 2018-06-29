@@ -6,11 +6,13 @@ describe('Database Connection', () => {
   let connection, smtpInterface
 
   beforeEach(() => {
+    exec('psql -c \'\\c testmailbox\' -c \'TRUNCATE TABLE mail;\'')
     connection = new DBConnection()
-    smtpInterface = new SMTPDbInterface(connection.client)
+    smtpInterface = new SMTPDbInterface(connection)
   })
 
-  it('run pull', () => {
-    smtpInterface.pull()
+  it('add to database', async () => {
+    await expect(smtpInterface.post('mailto', 'mailfrom', 'mailbody'))
+
   })
 })
