@@ -1,6 +1,6 @@
 const { exec } = require('child_process')
 const DBConnection = require('../../models/dbConnection')
-const SMTPDbInterface = require('../../models/smtpDBInterface')
+const SMTPDBInterface = require('../../models/smtpDBInterface')
 
 describe('Database Connection', () => {
   let connection, smtpInterface
@@ -8,7 +8,7 @@ describe('Database Connection', () => {
   beforeEach(() => {
     exec('psql -c \'\\c testmailbox\' -c \'TRUNCATE TABLE mail;\'')
     connection = new DBConnection()
-    smtpInterface = new SMTPDbInterface(connection)
+    smtpInterface = new SMTPDBInterface(connection)
   })
 
   it('add to database', async () => {

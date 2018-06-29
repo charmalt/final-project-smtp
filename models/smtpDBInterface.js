@@ -1,4 +1,4 @@
-class SMTPDbInterface {
+class SMTPDBInterface {
   constructor (connection) {
     this.connection = connection
   }
@@ -18,4 +18,4 @@ class SMTPDbInterface {
   }
 }
 
-module.exports = SMTPDbInterface
+module.exports = SMTPDBInterface
