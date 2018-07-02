@@ -24,6 +24,8 @@
     "url": "https://github.com/charmalt/final-project-smtp/issues"
   },
   "dependencies": {
+    "dot-env": "0.0.1",
+    "dotenv": "^6.0.0",
     "jake": "^8.0.16",
     "pg": "^6.1.0"
   },
