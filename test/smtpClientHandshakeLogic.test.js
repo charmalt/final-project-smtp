@@ -27,7 +27,7 @@ describe('smtpClientHandshake module', function () {
     })
     xit('should respond to second \'HELO\' with ERROR', function () {
       expect(smtpClientHandshake.parseMessage('HELO server')).toEqual(250)
-      expect(smtpClientHandshake.parseMessage('HELO server')).toEqual(503)
+      expect(smtpClientHandshake.parseMessage('DONE server')).toEqual(503)
     })
   })
 
