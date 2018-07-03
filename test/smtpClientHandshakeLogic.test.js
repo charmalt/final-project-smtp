@@ -5,16 +5,23 @@ describe('smtpClientHandshake module', () => {
   let mockQueue = { addToQueue: jest.fn() }
   let queueSpy
   let smtpClientHandshake
+  let domain = 'test.com'
+  let rcptToInternal = 'test@test.com'
+  let rcptToExternal = 'test@another.com'
 
   beforeEach(() => {
     queueSpy = jest.spyOn(mockQueue, 'addToQueue')
-    smtpClientHandshake = new SmtpClientHandshake(mockQueue)
+    smtpClientHandshake = new SmtpClientHandshake(mockQueue, domain)
     queueSpy.mockClear()
   })
 
   describe('Initialisation', () => {
     it('should set the dataMode to false on initialisation', () => {
       expect(smtpClientHandshake.dataMode).toBeFalsy()
+    })
+
+    it('should have domain set on initialisation', () => {
+      expect(smtpClientHandshake.domain).toBe(domain)
     })
   })
 
@@ -88,15 +95,68 @@ describe('smtpClientHandshake module', () => {
     })
 
     it('should add message to queue', () => {
+      smtpClientHandshake.messageContent.rcptTo = rcptToInternal
       smtpClientHandshake.parseMessage('QUIT')
       expect(queueSpy).toHaveBeenCalledTimes(1)
     })
   })
 
   describe('addToQueue', () => {
-    it('add message to the queue', () => {
+    it('should run the checkDomain method', () => {
+      let domainSpy = jest.spyOn(smtpClientHandshake, '_checkDomain')
+      smtpClientHandshake.addToQueue()
+      expect(domainSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should only add message to queue if checkDomain method returns true', () => {
+      smtpClientHandshake.messageContent.rcptTo = rcptToInternal
       smtpClientHandshake.addToQueue()
       expect(queueSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not add to queue if checkDomain method returns false', () => {
+      smtpClientHandshake.messageContent.rcptTo = rcptToExternal
+      smtpClientHandshake.addToQueue()
+      expect(queueSpy).toHaveBeenCalledTimes(0)
+    })
+
+    it('add message to the queue', () => {
+      smtpClientHandshake.messageContent.rcptTo = rcptToInternal
+      smtpClientHandshake.addToQueue()
+      expect(queueSpy).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('_checkDomain', () => {
+    it('should call _extractDomainFromReceiverAddress', () => {
+      let domainNameExtractorSpy = jest.spyOn(smtpClientHandshake, '_extractDomainFromReceiverAddress')
+      smtpClientHandshake._checkDomain(rcptToInternal)
+      expect(domainNameExtractorSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return true if rcptTo domain is the same as specified domain', () => {
+      smtpClientHandshake.messageContent.rcptTo = rcptToInternal
+      expect(smtpClientHandshake._checkDomain(smtpClientHandshake.messageContent.rcptTo)).toEqual(true)
+    })
+
+    it('should return false if rcptTo domain is not the same as specified domain', () => {
+      smtpClientHandshake.messageContent.rcptTo = rcptToExternal
+      expect(smtpClientHandshake._checkDomain(smtpClientHandshake.messageContent.rcptTo)).toEqual(false)
+    })
+  })
+
+  describe('_extractDomainFromReceiverAddress', () => {
+    let emailAddress = 'test@test.com'
+    it('should return the domain name from the email address', () => {
+      expect(smtpClientHandshake._extractDomainFromReceiverAddress(emailAddress)).toEqual('test.com')
+    })
+  })
+
+  describe('_processMessageBody', () => {
+    it('should separate message at terminating dot and return the part of the message preceeding the dot', () => {
+      smtpClientHandshake.messageContent.messageBody = 'Test and test \r\n.\r\n'
+      smtpClientHandshake._processMessageBody()
+      expect(smtpClientHandshake.messageContent.messageBody).toEqual('Test and test ')
     })
   })
 })
