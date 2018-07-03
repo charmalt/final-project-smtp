@@ -4,9 +4,8 @@ node_js:
 install:
  - npm install -g jake
  - npm install
- - jake --jakefile jake.js makeLocalDatabases
+ - jake --trace --jakefile jake.js makeLocalDatabases
 services:
  - postgresql
 env:
- - PGTEST="postgres://localhost:5432/testmailbox"
- - PGDEVELOPMENT="postgres://localhost:5432/mailbox"
+ - ENV="test"

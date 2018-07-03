@@ -2,8 +2,15 @@ const SMTPServer = require('../lib/smtpServer')
 const TCPServer = require('../lib/tcpServer')
 const MTAQueue = require('../lib/mtaQueue')
 const Handshake = require('../lib/smtpClientHandshakeLogic')
+const DBConnection = require('../models/dbConnection')
+const DBInterface = require('../models/smtpDBInterface')
+const MDA = require('../lib/messageDeliveryAgent')
+
 jest.mock('../lib/tcpServer')
 jest.mock('../lib/mtaQueue')
+jest.mock('../models/dbConnection')
+jest.mock('../models/smtpDBInterface')
+jest.mock('../lib/messageDeliveryAgent')
 
 describe('SMTPServer', () => {
   let server
@@ -15,7 +22,20 @@ describe('SMTPServer', () => {
   let serverInitSpy
   let serverStartSpy
   let serverCloseSpy
+  let dbConnectionSpy
+  let dbInterfaceSpy
+  let mdaSpy
+  let queueSpy
   let mockQueue = {
+    init: jest.fn()
+  }
+  let mockMDA = {
+    init: jest.fn()
+  }
+  let mockDBConnection = {
+    init: jest.fn()
+  }
+  let mockDBInterface = {
     init: jest.fn()
   }
 
@@ -24,12 +44,30 @@ describe('SMTPServer', () => {
     serverInitSpy = jest.spyOn(mockServer, 'init')
     serverStartSpy = jest.spyOn(mockServer, 'start')
     serverCloseSpy = jest.spyOn(mockServer, 'close')
+    dbConnectionSpy = jest.spyOn(mockDBConnection, 'init')
+    dbInterfaceSpy = jest.spyOn(mockDBInterface, 'init')
+    mdaSpy = jest.spyOn(mockMDA, 'init')
+    queueSpy = jest.spyOn(mockQueue, 'init')
+
     TCPServer.mockImplementation((port, address, handshake, queue) => {
       mockServer.init(port, address, handshake, queue)
       return mockServer
     })
-    MTAQueue.mockImplementation(() => {
+    MTAQueue.mockImplementation((mockMDA) => {
+      mockQueue.init(mockMDA)
       return mockQueue
+    })
+    DBConnection.mockImplementation((client) => {
+      mockDBConnection.init(client)
+      return mockDBConnection
+    })
+    DBInterface.mockImplementation((dbConnection) => {
+      mockDBInterface.init(dbConnection)
+      return mockDBInterface
+    })
+    MDA.mockImplementation((dbInterface) => {
+      mockMDA.init(dbInterface)
+      return mockMDA
     })
   })
 
@@ -56,11 +94,12 @@ describe('SMTPServer', () => {
   })
 
   describe('injected constructor', () => {
-    let injectedPort, injectedAddress
+    let injectedPort, injectedAddress, injectedClient
     beforeEach(() => {
       injectedPort = 5001
       injectedAddress = 'localhost'
-      server = new SMTPServer(injectedPort, injectedAddress)
+      injectedClient = 'client'
+      server = new SMTPServer(injectedPort, injectedAddress, injectedClient)
     })
 
     it('allows a port to be defined', () => {
@@ -69,6 +108,22 @@ describe('SMTPServer', () => {
 
     it('allows an address to be defined', () => {
       expect(server.address).toBe(injectedAddress)
+    })
+
+    it('passes the client to dbConnection', () => {
+      expect(dbConnectionSpy).toHaveBeenCalledWith(injectedClient)
+    })
+
+    it('passes the dbConnection to dbInterface', () => {
+      expect(dbInterfaceSpy).toHaveBeenCalledWith(mockDBConnection)
+    })
+
+    it('passes the dbInterface to mda', () => {
+      expect(mdaSpy).toHaveBeenCalledWith(mockDBInterface)
+    })
+
+    it('passes the mda to queue', () => {
+      expect(queueSpy).toHaveBeenCalledWith(mockMDA)
     })
   })
 
