@@ -8,5 +8,4 @@ install:
 services:
  - postgresql
 env:
- - PGTEST="postgres://localhost:5432/testmailbox"
- - PGDEVELOPMENT="postgres://localhost:5432/mailbox"
+ - ENV="test"
