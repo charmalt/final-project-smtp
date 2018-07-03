@@ -3,7 +3,7 @@ class SMTPDBInterface {
     this.connection = connection
   }
 
-  async post (mailto, mailfrom, mailbody) {
+  async post (mailfrom, mailto, mailbody) {
     let query = await this.connection.client.query(
       `INSERT INTO mail (mailto, mailfrom, mailbody) VALUES('${mailto}', '${mailfrom}', '${mailbody}')`
     )
