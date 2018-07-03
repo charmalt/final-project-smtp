@@ -1,8 +1,8 @@
+require('dotenv').config()
 const pg = require('pg')
-const env = require('./config')
 
 class DBConnection {
-  constructor (dbClient = new pg.Client(env['test'])) {
+  constructor (dbClient = new pg.Client(process.env.PGPROD)) {
     this.client = dbClient
     this.client.connect()
   }

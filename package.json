@@ -7,7 +7,8 @@
   "scripts": {
     "test": "jest --forceExit --coverage",
     "lint": "eslint src/js",
-    "buildDB": "jake --jakefile jake.js makeDatabases"
+    "buildDB": "jake --jakefile jake.js makeLocalDatabases",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -17,12 +18,14 @@
     "smtp",
     "server"
   ],
-  "author": "Igor Ryabchuk, George Sykes, Ben Furber, John Newman, Charlene Chetcuti",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/charmalt/final-project-smtp/issues"
   },
   "dependencies": {
+    "dot-env": "0.0.1",
+    "dotenv": "^6.0.0",
     "jake": "^8.0.16",
     "pg": "^6.1.0"
   },
@@ -41,5 +44,15 @@
     "env": [
       "jest"
     ]
-  }
+  },
+  "engines": {
+    "node": "8.11.1"
+  },
+  "contributors": [
+    "Charlene Chetcuti",
+    "Ben Furber",
+    "John Newman",
+    "Igor Ryabchuk",
+    "George Sykes"
+  ]
 }
