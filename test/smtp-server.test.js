@@ -24,8 +24,8 @@ describe('SMTPServer', () => {
     serverInitSpy = jest.spyOn(mockServer, 'init')
     serverStartSpy = jest.spyOn(mockServer, 'start')
     serverCloseSpy = jest.spyOn(mockServer, 'close')
-    TCPServer.mockImplementation((port, address, handshake, queue) => {
-      mockServer.init(port, address, handshake, queue)
+    TCPServer.mockImplementation((port, address, domain, handshake, queue) => {
+      mockServer.init(port, address, domain, handshake, queue)
       return mockServer
     })
     MTAQueue.mockImplementation(() => {
@@ -42,6 +42,10 @@ describe('SMTPServer', () => {
       expect(server.address).toEqual('127.0.0.1')
     })
 
+    it('has a default domain of test.com', () => {
+      expect(server.domain).toEqual('test.com')
+    })
+
     it('creates a TCPServer', () => {
       expect(server.server).toBe(mockServer)
     })
@@ -50,17 +54,18 @@ describe('SMTPServer', () => {
       expect(server.queue).toBe(mockQueue)
     })
 
-    it('gives the correct port and address to the server', () => {
-      expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address, Handshake, mockQueue)
+    it('gives the correct port, address and domain to the server', () => {
+      expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address, server.domain, Handshake, mockQueue)
     })
   })
 
   describe('injected constructor', () => {
-    let injectedPort, injectedAddress
+    let injectedPort, injectedAddress, injectedDomain
     beforeEach(() => {
       injectedPort = 5001
       injectedAddress = 'localhost'
-      server = new SMTPServer(injectedPort, injectedAddress)
+      injectedDomain = 'react.com'
+      server = new SMTPServer(injectedPort, injectedAddress, injectedDomain)
     })
 
     it('allows a port to be defined', () => {
@@ -69,6 +74,10 @@ describe('SMTPServer', () => {
 
     it('allows an address to be defined', () => {
       expect(server.address).toBe(injectedAddress)
+    })
+
+    it('allows a domain to be defined', () => {
+      expect(server.domain).toBe(injectedDomain)
     })
   })
 
