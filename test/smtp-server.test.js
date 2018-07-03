@@ -49,8 +49,8 @@ describe('SMTPServer', () => {
     mdaSpy = jest.spyOn(mockMDA, 'init')
     queueSpy = jest.spyOn(mockQueue, 'init')
 
-    TCPServer.mockImplementation((port, address, handshake, queue) => {
-      mockServer.init(port, address, handshake, queue)
+    TCPServer.mockImplementation((port, address, domain, handshake, queue) => {
+      mockServer.init(port, address, domain, handshake, queue)
       return mockServer
     })
     MTAQueue.mockImplementation((mockMDA) => {
@@ -80,6 +80,10 @@ describe('SMTPServer', () => {
       expect(server.address).toEqual('127.0.0.1')
     })
 
+    it('has a default domain of test.com', () => {
+      expect(server.domain).toEqual('test.com')
+    })
+
     it('creates a TCPServer', () => {
       expect(server.server).toBe(mockServer)
     })
@@ -88,18 +92,19 @@ describe('SMTPServer', () => {
       expect(server.queue).toBe(mockQueue)
     })
 
-    it('gives the correct port and address to the server', () => {
-      expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address, Handshake, mockQueue)
+    it('gives the correct port, address and domain to the server', () => {
+      expect(serverInitSpy).toHaveBeenCalledWith(server.port, server.address, server.domain, Handshake, mockQueue)
     })
   })
 
   describe('injected constructor', () => {
-    let injectedPort, injectedAddress, injectedClient
+    let injectedPort, injectedAddress, injectedDomain, injectedClient
     beforeEach(() => {
       injectedPort = 5001
       injectedAddress = 'localhost'
+      injectedDomain = 'react.com'
       injectedClient = 'client'
-      server = new SMTPServer(injectedPort, injectedAddress, injectedClient)
+      server = new SMTPServer(injectedPort, injectedAddress, injectedDomain, injectedClient)
     })
 
     it('allows a port to be defined', () => {
@@ -110,6 +115,11 @@ describe('SMTPServer', () => {
       expect(server.address).toBe(injectedAddress)
     })
 
+
+    it('allows a domain to be defined', () => {
+      expect(server.domain).toBe(injectedDomain)
+    })
+    
     it('passes the client to dbConnection', () => {
       expect(dbConnectionSpy).toHaveBeenCalledWith(injectedClient)
     })

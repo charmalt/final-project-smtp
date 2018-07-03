@@ -6,6 +6,7 @@ jest.mock('net')
 describe('Server', () => {
   let net = require('net')
   let server
+  let serverDomain = 'test.com'
   let serverPort = 1337
   let clientPort = 5001
   let serverAddress = '127.0.0.1'
@@ -14,7 +15,7 @@ describe('Server', () => {
     listen: () => {},
     close: () => {}
   }
-  let mockSpy
+  let mockListenerSpy
   let serverCloseSpy
   let mockSocket = {
     remoteAddress: clientAddress,
@@ -35,8 +36,8 @@ describe('Server', () => {
   class MockHandshakeConstructor {}
 
   beforeEach(() => {
-    server = new TCPServer(serverPort, serverAddress, MockHandshakeConstructor, mockQueue)
-    mockSpy = jest.spyOn(mockServer, 'listen')
+    server = new TCPServer(serverPort, serverAddress, serverDomain, MockHandshakeConstructor, mockQueue)
+    mockListenerSpy = jest.spyOn(mockServer, 'listen')
     serverCloseSpy = jest.spyOn(mockServer, 'close')
     net.createServer = () => { return mockServer }
     console.log = jest.fn()
@@ -55,9 +56,13 @@ describe('Server', () => {
     expect(server.address).toBe(serverAddress)
   })
 
+  it('defines a domain', () => {
+    expect(server.domain).toBe(serverDomain)
+  })
+
   it('tells the connection to listen on set port and address', () => {
     server.start()
-    expect(mockSpy).toHaveBeenCalledWith(serverPort, serverAddress)
+    expect(mockListenerSpy).toHaveBeenCalledWith(serverPort, serverAddress)
   })
 
   describe('createClient', () => {
