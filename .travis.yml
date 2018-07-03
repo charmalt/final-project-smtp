@@ -7,3 +7,6 @@ install:
  - jake --jakefile jake.js makeDatabases
 services:
  - postgresql
+env:
+ - PGTEST="postgres://localhost:5432/testmailbox"
+ - PGDEVELOPMENT="postgres://localhost:5432/mailbox"
