@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest --forceExit --coverage",
     "lint": "eslint src/js",
-    "buildDB": "jake --jakefile jake.js makeDatabases",
+    "buildDB": "jake --jakefile jake.js makeLocalDatabases",
     "start": "node app.js"
   },
   "repository": {

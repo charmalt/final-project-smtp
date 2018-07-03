@@ -1,5 +1,5 @@
 desc('Create main local Databse')
-task('makeDatabases', { async: true }, function () {
+task('makeLocalDatabases', { async: true }, function () {
   var cmds = [
     'createdb mailbox;',
     'createdb testmailbox;',
