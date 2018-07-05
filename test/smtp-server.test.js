@@ -98,13 +98,19 @@ describe('SMTPServer', () => {
   })
 
   describe('injected constructor', () => {
-    let injectedPort, injectedAddress, injectedDomain, injectedClient
+    let injectedPort, injectedAddress, injectedDomain, injectedClient, options
     beforeEach(() => {
       injectedPort = 5001
       injectedAddress = 'localhost'
       injectedDomain = 'react.com'
       injectedClient = 'client'
-      server = new SMTPServer(injectedPort, injectedAddress, injectedDomain, injectedClient)
+      options = {
+        port: injectedPort,
+        host: injectedAddress,
+        domain: injectedDomain,
+        client: injectedClient
+      }
+      server = new SMTPServer(options)
     })
 
     it('allows a port to be defined', () => {
@@ -115,11 +121,10 @@ describe('SMTPServer', () => {
       expect(server.address).toBe(injectedAddress)
     })
 
-
     it('allows a domain to be defined', () => {
       expect(server.domain).toBe(injectedDomain)
     })
-    
+
     it('passes the client to dbConnection', () => {
       expect(dbConnectionSpy).toHaveBeenCalledWith(injectedClient)
     })

@@ -8,6 +8,7 @@ describe('smtpClientHandshake module', () => {
   let domain = 'test.com'
   let rcptToInternal = 'test@test.com'
   let rcptToExternal = 'test@another.com'
+  console.log = jest.fn()
 
   beforeEach(() => {
     queueSpy = jest.spyOn(mockQueue, 'addToQueue')

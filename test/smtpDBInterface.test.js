@@ -20,6 +20,7 @@ describe('SMTPDbInterface', () => {
       })
     }
   }
+  console.log = jest.fn()
 
   it('returns the data when response resolves', async () => {
     smtpDbInterface = new SMTPDbInterface(mockConnection)

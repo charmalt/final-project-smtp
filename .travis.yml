@@ -4,8 +4,8 @@ node_js:
 install:
  - npm install -g jake
  - npm install
- - jake --trace --jakefile jake.js makeLocalDatabases
+ - jake --trace --jakefile jake.js makeDatabases
 services:
  - postgresql
 env:
- - ENV="test"
+ - NODE_ENV="test"
