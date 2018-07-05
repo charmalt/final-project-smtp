@@ -5,10 +5,12 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "jest --forceExit --coverage",
+    "start": "node app.js",
+    "test": "export NODE_ENV='test' && jest --forceExit --coverage",
     "lint": "eslint src/js",
-    "buildDB": "jake --jakefile jake.js makeLocalDatabases",
-    "start": "node app.js"
+    "buildDB": "jake --jakefile jake.js makeDatabases",
+    "dropDB": "jake --jakefile jake.js dropDatabases",
+    "testLocal": "export NODE_ENV='test' && npm run dropDB && npm run buildDB && npm run test"
   },
   "repository": {
     "type": "git",

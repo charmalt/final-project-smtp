@@ -18,6 +18,7 @@ describe('TCPClient', () => {
   }
   let mockWrite
   let mockDestroy
+  console.log = jest.fn()
 
   beforeEach(() => {
     client = new TCPConnectedClient(mockSocket, mockHandshake)
