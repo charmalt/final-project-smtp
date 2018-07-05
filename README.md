@@ -148,7 +148,7 @@ In the new terminal window enter the following commands.
 $ nc <Host> <Port>
 EHLO
 ```
-If the server is up and running properly you should see ```250``` returned to you. Try playing with other commands and see what comes back. The recognised commands should be *HELO, MAIL FROM:, RCPT TO:, DATA, QUIT*.
+If the server is up and running properly you should see ```250``` returned to you. Try playing with other commands and see what comes back. The recognised commands should be *HELO, EHLO, MAIL FROM:, RCPT TO:, DATA, QUIT*.
 
 ## Approach
 
