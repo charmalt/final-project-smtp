@@ -32,7 +32,7 @@ The primary requirement was to mimic a simple SMTP server that would implement a
   |        |<------- 250 ----------|        |
   |        |                       |        |
   |        |-------- QUIT -------->|        |
-  |        |<------- 331 ----------|        |
+  |        |<------- 221 ----------|        |
    ========                         ========
 
 ```
@@ -43,7 +43,7 @@ The key features required were:
 * An MDA that would take messages from the queue and connect to a database both locally or hosted in the cloud
 * Logging of key server events (Client connections, client disconnections, messages from clients, server start & server close)
 
-**Further information on SMTP servers can be found [here](XXXXXXXXXXXXX)**
+**Further information on SMTP servers can be found [here](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol)**
 
 ### Acceptance Criteria
 
@@ -148,7 +148,7 @@ If the server is up and running properly you should see ```250``` returned to yo
 
 ### Methodology
 
-The aim for the project was to understand how email worked in greater detail. The high level goals were to have code that was understandable, well encapsulated and easy to extend. We took an Object Oriented Programming (OOP) approach and, although there are still plenty of areas we would like to improve if given the time, we tried to keep to Single Responsibility Principle. This particular repository represents just the SMTP Server with the Mail Delivery Agent (MDA) element of the project and more information about the project as a whole can be found [here](XXXXXXXXXXXXXXXX).
+The aim for the project was to understand how email worked in greater detail. The high level goals were to have code that was understandable, well encapsulated and easy to extend. We took an Object Oriented Programming (OOP) approach and, although there are still plenty of areas we would like to improve if given the time, we tried to keep to Single Responsibility Principle. This particular repository represents just the SMTP Server with the Mail Delivery Agent (MDA) element of the project and more information about the project as a whole can be found [here](https://github.com/charmalt/final-project-main).
 
 The following diagram shows the relationships between the objects as well as their properties and public methods.
 
